@@ -1,0 +1,9 @@
+name: "values"
+# Version is the version of Helm plus the number of official builds for this
+# plugin
+version: "1.0.0"
+usage: "merge one or more YAML files of values"
+description: "Merge one or more YAML files of values."
+command: "$HELM_PLUGIN_DIR/values"
+hooks:
+  install: "$HELM_PLUGIN_DIR/install-binary.sh"

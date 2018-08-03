@@ -1,0 +1,13 @@
+hash: 4407ec2cee9b237d5e28fadce4a2564c463756f40b434cafa1447aa39baca06c
+updated: 2018-08-03T12:21:53.533025+08:00
+imports:
+- name: github.com/ghodss/yaml
+  version: e9ed3c6dfb39bb1a32197cb10d527906fe4da4b6
+- name: github.com/spf13/cobra
+  version: 7c4570c3ebeb8129a1f7456d0908a8b676b6f9f1
+- name: k8s.io/helm
+  version: 20adb27c7c5868466912eebdf6664e7390ebe710
+  subpackages:
+  - pkg/chartutil
+  - pkg/engine
+testImports: []

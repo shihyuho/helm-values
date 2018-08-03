@@ -1,3 +1,5 @@
+[![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/shihyuho/helm-values/blob/master/LICENSE)
+
 # Helm Values Plugin
 
 This is a Helm plugin to help developers merge one or more YAML files of values

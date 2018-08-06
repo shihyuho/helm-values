@@ -4,7 +4,7 @@
 
 This is a Helm plugin to help developers merge one or more YAML files of values
 
-[![asciicast](https://asciinema.org/a/StHw7ZiwrnJOoCr9ZoyRJpUKK.png)](https://asciinema.org/a/StHw7ZiwrnJOoCr9ZoyRJpUKK)
+[![asciicast](https://asciinema.org/a/195144.png)](https://asciinema.org/a/195144)
 
 ## Usage
 

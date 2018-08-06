@@ -15,10 +15,11 @@ $ helm values [flags] CHART
 ### Flags
 
 ```sh
-  -h, --help                help for helm
-  -o, --output string       write to a file, instead of stdout
-  -f, --values valueFiles   specify one or more YAML files of values (default [])
-  -v, --verbose             enable verbose output.
+Flags:
+      --backup-suffix string   suffix append to values.yaml if values.yaml already exist in output-dir (default ".bak")
+  -h, --help                   help for helm
+  -o, --output-dir string      writes the merged values to files in output-dir instead of stdout
+  -f, --values valueFiles      specify one or more YAML files of values (default [])
 ```
 
 ## Install

@@ -16,16 +16,16 @@ hookInstall: bootstrap build
 
 .PHONY: build
 build:
-	go build -o values -ldflags $(LDFLAGS) ./main.go
+	go build -o values -ldflags $(LDFLAGS)
 
 .PHONY: dist
 dist:
 	mkdir -p $(DIST)
-	GOOS=linux GOARCH=amd64 go build -o values -ldflags $(LDFLAGS) ./main.go
+	GOOS=linux GOARCH=amd64 go build -o values -ldflags $(LDFLAGS)
 	tar -zcvf $(DIST)/helm-values-linux-$(VERSION).tgz values README.md LICENSE plugin.yaml
-	GOOS=darwin GOARCH=amd64 go build -o values -ldflags $(LDFLAGS) ./main.go
+	GOOS=darwin GOARCH=amd64 go build -o values -ldflags $(LDFLAGS)
 	tar -zcvf $(DIST)/helm-values-macos-$(VERSION).tgz values README.md LICENSE plugin.yaml
-	GOOS=windows GOARCH=amd64 go build -o values.exe -ldflags $(LDFLAGS) ./main.go
+	GOOS=windows GOARCH=amd64 go build -o values.exe -ldflags $(LDFLAGS)
 	tar -zcvf $(DIST)/helm-values-windows-$(VERSION).tgz values.exe README.md LICENSE plugin.yaml
 
 .PHONY: bootstrap

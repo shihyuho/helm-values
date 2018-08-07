@@ -115,7 +115,7 @@ testVersion() {
   # To avoid to keep track of the Windows suffix,
   # call the plugin assuming it is in the PATH
   PATH=$PATH:$HELM_PLUGIN_PATH
-  tpl -h
+  values -h
   set -e
 }
 

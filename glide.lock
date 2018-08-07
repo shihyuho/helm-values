@@ -1,0 +1,14 @@
+hash: d24b44eb0d0cbecd1ac1d0116418a098c8e3455a9c9e4e2841089510227a49d1
+updated: 2018-08-07T17:31:02.334535+08:00
+imports:
+- name: github.com/imdario/mergo
+  version: 9f23e2d6bd2a77f959b2bf6acdbefd708a83a4a4
+- name: github.com/inconshreveable/mousetrap
+  version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
+- name: github.com/spf13/cobra
+  version: 7c4570c3ebeb8129a1f7456d0908a8b676b6f9f1
+- name: github.com/spf13/pflag
+  version: 3ebe029320b2676d667ae88da602a5f854788a8a
+- name: gopkg.in/yaml.v2
+  version: 5420a8b6744d3b0345ab293f6fcba19c978f1183
+testImports: []

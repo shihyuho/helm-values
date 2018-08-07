@@ -4,8 +4,7 @@
 
 [Helm](https://github.com/helm/helm) doesn't support specify *value.yaml* when packaging chart archive. Therefore this plugin helps developers merge one or more YAML files of values for easily packaging different environments Helm Charts.
 
-[![asciicast](https://asciinema.org/a/195144.png)](https://asciinema.org/a/195144)
-
+[![asciicast](https://asciinema.org/a/195362.png)](https://asciinema.org/a/195362)
 
 ## Install
 

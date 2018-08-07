@@ -22,13 +22,15 @@ build:
 
 .PHONY: dist
 dist:
+	mkdir -p $(BUILD)
 	mkdir -p $(DIST)
+	cp README.md $(BUILD) && cp LICENSE $(BUILD) && cp plugin.yaml $(BUILD)
 	GOOS=linux GOARCH=amd64 go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS)
-	tar -zcvf $(DIST)/helm-$(BINARY)-linux-$(VERSION).tgz $(BUILD)/$(BINARY) README.md LICENSE plugin.yaml
+	tar -C $(BUILD) -zcvf $(DIST)/helm-$(BINARY)-linux-$(VERSION).tgz $(BINARY) README.md LICENSE plugin.yaml
 	GOOS=darwin GOARCH=amd64 go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS)
-	tar -zcvf $(DIST)/helm-$(BINARY)-macos-$(VERSION).tgz $(BUILD)/$(BINARY) README.md LICENSE plugin.yaml
+	tar -C $(BUILD) -zcvf $(DIST)/helm-$(BINARY)-macos-$(VERSION).tgz $(BINARY) README.md LICENSE plugin.yaml
 	GOOS=windows GOARCH=amd64 go build -o $(BUILD)/$(BINARY).exe -ldflags $(LDFLAGS)
-	tar -llzcvf $(DIST)/helm-$(BINARY)-windows-$(VERSION).tgz $(BUILD)/$(BINARY).exe README.md LICENSE plugin.yaml
+	tar -C $(BUILD) -llzcvf $(DIST)/helm-$(BINARY)-windows-$(VERSION).tgz $(BINARY).exe README.md LICENSE plugin.yaml
 
 .PHONY: bootstrap
 bootstrap:
@@ -36,3 +38,8 @@ ifndef HAS_GLIDE
 	go get -u github.com/Masterminds/glide
 endif
 	glide install --strip-vendor
+
+
+.PHONY: clean
+clean:
+	rm -rf _*

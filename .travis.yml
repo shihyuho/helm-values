@@ -1,7 +1,7 @@
 language: go
 go:
 - 1.10.x
-- master
+#- master # too slow to run on travis..
 sudo: false
 script:
 - make bootstrap test

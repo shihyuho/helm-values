@@ -1,19 +1,17 @@
 language: go
-
 go:
-  - "1.10.x"
-  - master
-
-# Setting sudo access to false will let Travis CI use containers rather than
-# VMs to run the tests. For more details see:
-# - http://docs.travis-ci.com/user/workers/container-based-infrastructure/
-# - http://docs.travis-ci.com/user/workers/standard-infrastructure/
+- 1.10.x
+- master
 sudo: false
-
-install:
-  - go get -v github.com/Masterminds/glide
-  - cd $GOPATH/src/github.com/Masterminds/glide && go install && cd -
-  - glide install --strip-vendor
-
 script:
-  - make dist
+- make bootstrap test
+deploy:
+  provider: releases
+  api_key:
+    secure: RgOb5rct+bBYozZuW0/Ec/g7kNHuhe1dPoK7rlNsCC5t8JXl5bmb2vM5hRxTOgzC496d+Vke69q7hes0NjR9sWdgud7olGsc5QglTixiP3oXkQv/wainuxZH+YZYoOqca6u1cElJ6pzlyJcQjbdUVct6ZyT5yx/vtOYGffgF56K3qgjbL3JS7XhwrxquaJL6tkTF7Gnx447nP2b/3Z3WtmgLMPovqd0OO+lq3ie6+2C2eU9jOhdk+e7q9ltwfbiFJ2eKRAwn8E3rbZJ022uEVX+GK2sKzC2Lu8Plwnhj2Wtq3bNpxMoDwWw5bRNVD8rDVQJ/4hpbDD9obRu+El9vbuFqode2l0O9X+sMl/FX1PHZUvoArXKaHzQwrMrrAU3CTCntBBcaSwLJVVDLEpkDYw8A3WKYxQfh9eAQRhzckjg6Urun/qzSisSqtWO5zAr0RgB4WOgWDO7LKTg7KNi58wbzQYKfCR255bWTLbcoGy+WqQGaxev3bYo0CvPGVaXpx7N6PqeiDV/bmtY8prIsh6WLMpDmiEyWCCm0DvuLO9Ug5Wdjmv+HJHx0BrQR3+Z9iGXYEPljx51iC+/KvNfKtHYNpkEi5/onqT/iZoQznDlW414YSR0Gr1rLCmYaZzRRq0X7kfIbO78ONYw/vPOJb7itKVFsERyQJahpLBcEz6o=
+  file: _dist/*
+  file_glob: true
+  skip_cleanup: true
+  on:
+    tags: true
+    repo: shihyuho/helm-values

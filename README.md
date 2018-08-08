@@ -1,5 +1,4 @@
-[![Build Status](https://travis-ci.org/shihyuho/helm-values.svg?branch=master)](https://travis-ci.org/shihyuho/helm-values
-)
+[![Build Status](https://travis-ci.org/shihyuho/helm-values.svg?branch=master)](https://travis-ci.org/shihyuho/helm-values)
 [![License](https://img.shields.io/badge/License-Apache%202.0-blue.svg)](https://github.com/shihyuho/helm-values/blob/master/LICENSE)
 
 # Helm Values Plugin

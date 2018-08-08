@@ -25,7 +25,7 @@ build:
 	go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS)
 
 .PHONY: dist
-dist: test
+dist:
 	mkdir -p $(BUILD)
 	mkdir -p $(DIST)
 	cp README.md $(BUILD) && cp LICENSE $(BUILD) && cp plugin.yaml $(BUILD)

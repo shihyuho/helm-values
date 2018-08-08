@@ -12,8 +12,8 @@ sudo: false
 
 install:
   - go get -v github.com/Masterminds/glide
-  - cd $GOPATH/src/github.com/Masterminds/glide && git checkout v0.13.1 && go install && cd -
-  - glide install
+  - cd $GOPATH/src/github.com/Masterminds/glide && go install && cd -
+  - glide install --strip-vendor
 
 script:
-  - make test
+  - make dist

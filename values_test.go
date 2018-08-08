@@ -63,3 +63,26 @@ service:
 		t.Errorf("expected %s, but got %s", expected, actual)
 	}
 }
+
+func TestValueFiles(t *testing.T) {
+	v := valueFiles{"a", "b"}
+
+	v.Insert("x", 0)
+	expected := "[x a b]"
+	if actual := v.String(); actual != expected {
+		t.Errorf("expected %s, but got %s", expected, actual)
+	}
+
+	v.Insert("y", 2)
+	expected = "[x a y b]"
+	if actual := v.String(); actual != expected {
+		t.Errorf("expected %s, but got %s", expected, actual)
+	}
+
+	v.Insert("z", -1)
+	expected = "[x a y b z]"
+	if actual := v.String(); actual != expected {
+		t.Errorf("expected %s, but got %s", expected, actual)
+	}
+
+}

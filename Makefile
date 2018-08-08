@@ -8,20 +8,24 @@ LDFLAGS := "-X main.version=${VERSION}"
 BINARY := values
 
 .PHONY: install
-install: bootstrap build
+install: bootstrap test build
 	mkdir -p $(HELM_PLUGIN_DIR)
 	cp $(BUILD)/$(BINARY) $(HELM_PLUGIN_DIR)
 	cp plugin.yaml $(HELM_PLUGIN_DIR)
 
 .PHONY: hookInstall
-hookInstall: bootstrap build
+hookInstall: bootstrap test build
+
+.PHONY: test
+test:
+	go test -v
 
 .PHONY: build
 build:
 	go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS)
 
 .PHONY: dist
-dist:
+dist: test
 	mkdir -p $(BUILD)
 	mkdir -p $(DIST)
 	cp README.md $(BUILD) && cp LICENSE $(BUILD) && cp plugin.yaml $(BUILD)
@@ -38,7 +42,6 @@ ifndef HAS_GLIDE
 	go get -u github.com/Masterminds/glide
 endif
 	glide install --strip-vendor
-
 
 .PHONY: clean
 clean:

@@ -1,0 +1,18 @@
+language: go
+
+go:
+  - 1.9.x
+  - tip
+
+# Setting sudo access to false will let Travis CI use containers rather than
+# VMs to run the tests. For more details see:
+# - http://docs.travis-ci.com/user/workers/container-based-infrastructure/
+# - http://docs.travis-ci.com/user/workers/standard-infrastructure/
+sudo: false
+
+install:
+  - go get -v github.com/Masterminds/glide
+  - cd $GOPATH/src/github.com/Masterminds/glide && git checkout 67790b3dbede72cfdc54aa53be4706322c9499e0 && go install && cd -
+
+script:
+  - make test

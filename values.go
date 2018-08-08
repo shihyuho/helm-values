@@ -25,7 +25,7 @@ type valuesCmd struct {
 }
 
 func (cmd *valuesCmd) run() error {
-	cmd.values.prepend(path.Join(cmd.chartPath, defaultValuesFilename))
+	cmd.values.Insert(path.Join(cmd.chartPath, defaultValuesFilename), 0)
 	vv, err := vals(cmd.values)
 	if err != nil {
 		return err
@@ -159,9 +159,14 @@ func (v *valueFiles) Set(value string) error {
 	return nil
 }
 
-func (v *valueFiles) prepend(value string) error {
+// insert value to the index of valueFiles, append at last if index < 0
+func (v *valueFiles) Insert(value string, index int) error {
+	if index < 0 {
+		return v.Set(value)
+	}
 	for _, filePath := range strings.Split(value, ",") {
-		*v = append(valueFiles{filePath}, *v...)
+		vv := append((*v)[:index], append(valueFiles{filePath}, (*v)[index:]...)...)
+		*v = vv
 	}
 	return nil
 }

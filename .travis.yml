@@ -10,8 +10,10 @@ go:
 # - http://docs.travis-ci.com/user/workers/standard-infrastructure/
 sudo: false
 
+go_import_path:
+  - github.com/Masterminds/glide
+
 install:
-  - go get -v github.com/Masterminds/glide
   - cd $GOPATH/src/github.com/Masterminds/glide && git checkout v0.13.1 && go install && cd -
   - glide install
 

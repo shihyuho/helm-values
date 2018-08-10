@@ -5,6 +5,8 @@ import (
 	"os"
 	"io/ioutil"
 	"path"
+	"gopkg.in/yaml.v2"
+	"fmt"
 )
 
 func TestVals(t *testing.T) {
@@ -42,12 +44,10 @@ service:
 		y1, y2, y3,
 	}
 
-	mreged, err := vals(v)
+	merged, err := vals(v)
 	if err != nil {
 		t.Error(err)
 	}
-
-	//fmt.Println(string(actual))
 
 	expected := `affinity: {}
 image:
@@ -58,13 +58,12 @@ service:
   port: 8080
   type: ClusterIP
 `
-
-	if actual := string(mreged); actual != expected {
+	if actual := string(merged); actual != expected {
 		t.Errorf("expected %s, but got %s", expected, actual)
 	}
 }
 
-func TestValueFiles(t *testing.T) {
+func TestValueFiles_Insert(t *testing.T) {
 	v := valueFiles{"a", "b"}
 
 	v.Insert("x", 0)
@@ -84,5 +83,67 @@ func TestValueFiles(t *testing.T) {
 	if actual := v.String(); actual != expected {
 		t.Errorf("expected %s, but got %s", expected, actual)
 	}
+}
 
+func TestMergeValues(t *testing.T) {
+	b1 := []byte(`
+service:
+  port: 80
+  type: ClusterIP
+image:
+  pullPolicy: IfNotPresent
+  repository: nginx
+  tag: stable
+affinity: {}
+`)
+	src := yaml.MapSlice{}
+	if err := yaml.Unmarshal(b1, &src); err != nil {
+		t.Error(err)
+	}
+
+	dst := yaml.MapSlice{}
+	dst = mergeValues(dst, src)
+	expected := "[{service [{port 80} {type ClusterIP}]} {image [{pullPolicy IfNotPresent} {repository nginx} {tag stable}]} {affinity []}]"
+	if actual := fmt.Sprintf("%v", dst); actual != expected {
+		t.Errorf("expected %s, but got %s", expected, actual)
+	}
+
+	b2 := []byte(`
+image:
+ tag: alpine
+`)
+	src = yaml.MapSlice{}
+	if err := yaml.Unmarshal(b2, &src); err != nil {
+		t.Error(err)
+	}
+
+	dst = mergeValues(dst, src)
+	expected = "[{service [{port 80} {type ClusterIP}]} {image [{pullPolicy IfNotPresent} {repository nginx} {tag alpine}]} {affinity []}]"
+	if actual := fmt.Sprintf("%v", dst); actual != expected {
+		t.Errorf("expected %s, but got %s", expected, actual)
+	}
+}
+
+func TestSetValue(t *testing.T) {
+	bytes := []byte(`
+pullPolicy: IfNotPresent
+repository: nginx
+tag: stable
+`)
+
+	slice := yaml.MapSlice{}
+	if err := yaml.Unmarshal(bytes, &slice); err != nil {
+		t.Error(err)
+	}
+
+	slice = setValue(slice, "tag", "alpine")
+	for _, item := range slice {
+		if item.Key == "tag" {
+			if actual := item.Value; actual != "alpine" {
+				t.Errorf("expected %s, but got %s", "alpine", actual)
+			}
+			return
+		}
+	}
+	t.Error("item of tag not in slice..")
 }

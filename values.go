@@ -9,7 +9,6 @@ import (
 	"io/ioutil"
 	"gopkg.in/yaml.v2"
 	"io"
-	"github.com/imdario/mergo"
 )
 
 const (
@@ -111,11 +110,12 @@ func ensureDirectoryForFile(file string) error {
 
 // vals merges values from files specified via -f/--values
 func vals(valueFiles valueFiles) ([]byte, error) {
-	base := map[string]interface{}{}
+	base := yaml.MapSlice{}
 
 	// User specified a values files via -f/--values
 	for _, filePath := range valueFiles {
-		currentMap := map[string]interface{}{}
+		// currentMap := map[string]interface{}{}
+		currentMap := yaml.MapSlice{}
 
 		var bytes []byte
 		var err error
@@ -133,13 +133,68 @@ func vals(valueFiles valueFiles) ([]byte, error) {
 			return []byte{}, fmt.Errorf("failed to parse %s: %s", filePath, err)
 		}
 		// Merge with the previous map
-		if err := mergo.Merge(&base, currentMap, mergo.WithOverride); err != nil {
-			return []byte{}, err
-		}
+		base = mergeValues(base, currentMap)
 	}
 
 	return yaml.Marshal(base)
+}
 
+// Merges source and destination map, preferring values from the source map
+func mergeValues(dest yaml.MapSlice, src yaml.MapSlice) yaml.MapSlice {
+	for _, item := range src {
+		// If the key doesn't exist already, then just set the key to that value
+		if exists := containsKey(dest, item.Key); !exists {
+			dest = setValue(dest, item.Key, item.Value)
+			continue
+		}
+		nextMap, ok := item.Value.(yaml.MapSlice)
+		// If it isn't another map, overwrite the value
+		if !ok {
+			dest = setValue(dest, item.Key, item.Value)
+			continue
+		}
+		// Edge case: If the key exists in the destination, but isn't a map
+		destMap, isMap := getValue(dest, item.Key)
+		// If the source map has a map for this key, prefer it
+		if !isMap {
+			dest = setValue(dest, item.Key, item.Value)
+			continue
+		}
+		// If we got to this point, it is a map in both, so merge them
+		merged := mergeValues(destMap, nextMap)
+		dest = setValue(dest, item.Key, merged)
+	}
+	return dest
+}
+
+func containsKey(slice yaml.MapSlice, key interface{}) bool {
+	for _, item := range slice {
+		if item.Key == key {
+			return true
+		}
+	}
+	return false
+}
+
+func setValue(slice yaml.MapSlice, key, newValue interface{}) yaml.MapSlice {
+	for i := 0; i < len(slice); i++ {
+		if slice[i].Key == key { // if key exist in slice, replace it
+			slice[i].Value = newValue
+			return slice
+		}
+	}
+	// If we got to this point, it is a new key in slice, so just add at the end of slice
+	return append(slice, yaml.MapItem{Key: key, Value: newValue})
+}
+
+func getValue(slice yaml.MapSlice, key interface{}) (value yaml.MapSlice, ok bool) {
+	for _, item := range slice {
+		if item.Key == key {
+			value, ok = item.Value.(yaml.MapSlice)
+			return
+		}
+	}
+	return
 }
 
 type valueFiles []string

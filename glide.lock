@@ -1,8 +1,6 @@
-hash: d24b44eb0d0cbecd1ac1d0116418a098c8e3455a9c9e4e2841089510227a49d1
-updated: 2018-08-07T17:31:02.334535+08:00
+hash: 4af5678b357b38c40f82bebf4212c0a0d6b1de268afcf4d838c84b35ed3d9782
+updated: 2018-08-10T11:34:00.530619+08:00
 imports:
-- name: github.com/imdario/mergo
-  version: 9f23e2d6bd2a77f959b2bf6acdbefd708a83a4a4
 - name: github.com/inconshreveable/mousetrap
   version: 76626ae9c91c4f2a10f34cad8ce83ea42c93bb75
 - name: github.com/spf13/cobra

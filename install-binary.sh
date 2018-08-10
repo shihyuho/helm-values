@@ -96,6 +96,8 @@ installFile() {
   echo "Preparing to install into ${HELM_PLUGIN_PATH}"
   # Use * to also copy the file withe the exe suffix on Windows
   cp "$HELM_TMP_BIN"* "$HELM_PLUGIN_PATH"
+  # Copy the plugin.yaml as well
+  cp "$HELM_TMP/plugin.yaml"* "$HELM_PLUGIN_PATH"
 }
 
 # fail_trap is executed if an error occurs.

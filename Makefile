@@ -28,7 +28,7 @@ build:
 dist:
 	mkdir -p $(BUILD)
 	mkdir -p $(DIST)
-	cp README.md $(BUILD) && cp LICENSE $(BUILD) && cp plugin.yaml $(BUILD)
+	cp README.md $(BUILD) && cp LICENSE $(BUILD) && sed -E 's/(version: )"(.+)"/\1"$(VERSION)"/g' plugin.yaml > $(BUILD)/plugin.yaml
 	GOOS=linux GOARCH=amd64 go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS) -a -tags netgo
 	tar -C $(BUILD) -zcvf $(DIST)/helm-$(BINARY)-linux-$(VERSION).tgz $(BINARY) README.md LICENSE plugin.yaml
 	GOOS=darwin GOARCH=amd64 go build -o $(BUILD)/$(BINARY) -ldflags $(LDFLAGS) -a -tags netgo

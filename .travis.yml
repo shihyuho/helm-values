@@ -6,7 +6,6 @@ sudo: false
 script:
 - make bootstrap test
 before_deploy:
-- sed -E 's/(version: )"(.+)"/\1"${TRAVIS_TAG}"/g' plugin.yaml > plugin.yaml
 - make dist VERSION=${TRAVIS_TAG}
 deploy:
   provider: releases
